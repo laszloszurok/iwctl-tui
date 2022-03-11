@@ -43,10 +43,10 @@ def list_available_networks(stdscr, selected_row_idx: int) -> None:
 
     stdscr.clear()
 
-    ssids = subprocess.run('./get_ssids.sh', stdout=subprocess.PIPE)
-    lines = ssids.stdout.splitlines()
+    get_ssids_proc = subprocess.run('./get_ssids.sh', stdout=subprocess.PIPE)
+    ssids = get_ssids_proc.stdout.splitlines()
 
-    for idx, line in enumerate(lines):
+    for idx, line in enumerate(ssids):
         # some disgustingly specific string manipulation to remove remaining
         # ansi escape sequences from the output of get_ssids.sh
         line = re.sub("^\\[\\[0m", "", str(line))
@@ -61,8 +61,7 @@ def list_available_networks(stdscr, selected_row_idx: int) -> None:
         else:
             stdscr.addstr(idx, 0, line)
 
-    menu_len = len(lines)
-    ssids = lines
+    menu_len = len(ssids)
 
     stdscr.refresh()
 
