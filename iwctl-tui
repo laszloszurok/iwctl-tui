@@ -68,7 +68,7 @@ def list_available_networks(stdscr, selected_row_idx: int) -> None:
     stdscr.refresh()
 
 def print_header(stdscr):
-    ascii = [
+    ascii_banner = [
          " _           _   _     _        _ ",
          "(_)_ __ ____| |_| |___| |_ _  _(_)",
          "| \ V  V / _|  _| |___|  _| || | |",
@@ -76,7 +76,7 @@ def print_header(stdscr):
 
     ]
     h, w = stdscr.getmaxyx()
-    for idx, line in enumerate(ascii):
+    for idx, line in enumerate(ascii_banner):
         stdscr.addstr(h//5 + idx, w//2 - 18, line)
     stdscr.refresh()
         
