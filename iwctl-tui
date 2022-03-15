@@ -43,23 +43,27 @@ def list_available_networks(stdscr, selected_row_idx: int) -> None:
 
     stdscr.clear()
 
+    h, w = stdscr.getmaxyx()
     get_ssids_proc = subprocess.run('./get_ssids.sh', stdout=subprocess.PIPE)
     ssids = get_ssids_proc.stdout.splitlines()
 
-    for idx, line in enumerate(ssids):
+    for idx, row in enumerate(ssids):
         # some disgustingly specific string manipulation to remove remaining
         # ansi escape sequences from the output of get_ssids.sh
-        line = re.sub("^\\[\\[0m", "", str(line))
-        line = re.sub("b'", "", line)
-        line = re.sub("\\\\x1b\\[0m", "", line)
-        line = line[:-1]
+        row = re.sub("^\\[\\[0m", "", str(row))
+        row = re.sub("b'", "", row)
+        row = re.sub("\\\\x1b\\[0m", "", row)
+        row = row[:-1]
+
+        x = w//2 - len(row)//2
+        y = h//2 - len(menu)//2 + idx
 
         if idx == selected_row_idx:
             stdscr.attron(curses.color_pair(1))
-            stdscr.addstr(idx, 0, line)
+            stdscr.addstr(y, x, row)
             stdscr.attroff(curses.color_pair(1))
         else:
-            stdscr.addstr(idx, 0, line)
+            stdscr.addstr(y, x, row)
 
     menu_len = len(ssids)
 
